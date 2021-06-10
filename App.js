@@ -7,6 +7,7 @@ import {
   TextInput,
   View,
   ScrollView,
+  FlatList,
 } from "react-native";
 
 export default function App() {
@@ -18,7 +19,10 @@ export default function App() {
 
   const addText = () => {
     console.log(inputText);
-    setTextList((textList) => [...textList, inputText]);
+    setTextList((textList) => [
+      ...textList,
+      { uniqueid: textList.length.toString(), value: inputText },
+    ]);
     setInputText("");
   };
 
@@ -34,13 +38,15 @@ export default function App() {
         />
         <Button title="ADD" style={{}} onPress={addText} />
       </View>
-      <ScrollView>
-        {textList.map((item, itemNum) => (
-          <View key={itemNum} style={styles.listedItem}>
-            <Text>{item}</Text>
+      <FlatList
+        keyExtractor={(item, index) => item.uniqueid}
+        data={textList}
+        renderItem={(itemData) => (
+          <View style={styles.listedItem}>
+            <Text>{itemData.item.value}</Text>
           </View>
-        ))}
-      </ScrollView>
+        )}
+      />
     </View>
   );
 }
