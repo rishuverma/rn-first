@@ -10,42 +10,25 @@ import {
   FlatList,
 } from "react-native";
 
-export default function App() {
-  const [inputText, setInputText] = useState("");
-  const [textList, setTextList] = useState([]);
-  const textHandler = (enteredText) => {
-    setInputText(enteredText);
-  };
+import ItemList from "./components/ItemList";
+import ItemInput from "./components/ItemInput";
 
-  const addText = () => {
-    console.log(inputText);
+export default function App() {
+  const [textList, setTextList] = useState([]);
+
+  const addText = (inputTextFromComponent) => {
     setTextList((textList) => [
       ...textList,
-      { uniqueid: textList.length.toString(), value: inputText },
+      { uniqueid: textList.length.toString(), value: inputTextFromComponent },
     ]);
-    setInputText("");
   };
-
   return (
     <View style={styles.root}>
-      <View style={styles.parentView}>
-        {/* <Text>Open up App.js to start working on your app!</Text> */}
-        <TextInput
-          placeholder="Enter your note!"
-          style={styles.input}
-          onChangeText={textHandler}
-          value={inputText}
-        />
-        <Button title="ADD" style={{}} onPress={addText} />
-      </View>
+      <ItemInput onAddText={addText} />
       <FlatList
         keyExtractor={(item, index) => item.uniqueid}
         data={textList}
-        renderItem={(itemData) => (
-          <View style={styles.listedItem}>
-            <Text>{itemData.item.value}</Text>
-          </View>
-        )}
+        renderItem={(itemData) => <ItemList value={itemData.item.value} />}
       />
     </View>
   );
@@ -56,23 +39,5 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingLeft: 20,
     paddingRight: 20,
-  },
-
-  parentView: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  input: {
-    borderColor: "black",
-    borderWidth: 1,
-    paddingRight: 10,
-    width: "70%",
-  },
-  listedItem: {
-    marginVertical: 5,
-    padding: 10,
-    backgroundColor: "#ccc",
   },
 });
