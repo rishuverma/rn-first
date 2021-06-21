@@ -8,6 +8,7 @@ import {
   View,
   ScrollView,
   FlatList,
+  Vibration,
 } from "react-native";
 
 import ItemList from "./components/ItemList";
@@ -27,15 +28,18 @@ export default function App() {
         },
       ]);
       setModalVisibility(false);
+      Vibration.vibrate(40);
     }
   };
   const removeItemFromList = async (itemId) => {
     setTextList((textList) => {
       return textList.filter((eachItem) => eachItem.uniqueid != itemId);
     });
+    Vibration.vibrate(70);
   };
   const onCancelPress = () => {
     setModalVisibility(false);
+    Vibration.vibrate(40);
   };
   return (
     <View style={styles.root}>
